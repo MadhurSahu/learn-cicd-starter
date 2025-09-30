@@ -17,8 +17,8 @@ func TestGetAPIKey(t *testing.T) {
 	headers.Set("Authorization", "Api 1234")
 	_, err = GetAPIKey(headers)
 
-	if !errors.Is(err, MalformedAuthHeader) {
-		t.Errorf("expected error %v, got %v", MalformedAuthHeader, err)
+	if !errors.Is(err, ErrMalformedAuthHeader) {
+		t.Errorf("expected error %v, got %v", ErrMalformedAuthHeader, err)
 	}
 
 	headers.Set("Authorization", "ApiKey 1234")
