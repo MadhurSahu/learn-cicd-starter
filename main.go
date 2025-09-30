@@ -55,26 +55,32 @@ func main() {
 
 	router := chi.NewRouter()
 
-	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"https://*", "http://*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"*"},
-		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: false,
-		MaxAge:           300,
-	}))
+	router.Use(
+		cors.Handler(
+			cors.Options{
+				AllowedOrigins:   []string{"https://*", "http://*"},
+				AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+				AllowedHeaders:   []string{"*"},
+				ExposedHeaders:   []string{"Link"},
+				AllowCredentials: false,
+				MaxAge:           300,
+			},
+		),
+	)
 
-	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		f, err := staticFiles.Open("static/index.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		defer f.Close()
-		if _, err := io.Copy(w, f); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-		}
-	})
+	router.Get(
+		"/", func(w http.ResponseWriter, r *http.Request) {
+			f, err := staticFiles.Open("static/index.html")
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			defer f.Close()
+			if _, err := io.Copy(w, f); err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+		},
+	)
 
 	v1Router := chi.NewRouter()
 
